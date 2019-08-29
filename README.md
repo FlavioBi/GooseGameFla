@@ -9,7 +9,7 @@ La prima cosa da impostare è il numero di giocatori che può variare da un mini
 
 Dopodichè ti verrà chiesto di inserire i nomi dei giocatori, (una volta digitato il nome della persona premere il tasto INVIO).
 
-Il gioco automaticamente stabilisce in maniere randomica l'ordine in cui i giocatori tireranno i dadi durante la partita.
+Il gioco automaticamente stabilisce in maniera randomica l'ordine dei giocarori durante la partita.
 
 Il gioco ha inizio!
 
