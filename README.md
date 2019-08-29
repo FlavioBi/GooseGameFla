@@ -9,10 +9,12 @@ La prima cosa da impostare è il numero di giocatori che può variare da un mini
 
 Dopodichè ti verrà chiesto di inserire i nomi dei giocatori, (una volta digitato il nome della persona premere il tasto INVIO).
 
-Il gioco automaticamente stabilisce in maniera randomica l'ordine dei giocarori durante la partita.
+Il programma stabilisce automaticamente in maniera randomica l'ordine di gioco dei partecipanti, (che verrà viualizzato sul pannello).
 
 Il gioco ha inizio!
 
 Ad ogni turno il giocatore preme il tasto INVIO scatenando così il lancio, (automatico), dei dadi e lo spostamento della propria pedina nel tabellone di gioco, (anch'esso automatico).
 
 Vince chi arriva primo alla casella 63.
+
+Have fun!
