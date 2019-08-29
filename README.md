@@ -13,6 +13,6 @@ Il gioco automaticamente stabilisce in maniera randomica l'ordine dei giocarori 
 
 Il gioco ha inizio!
 
-Ad ogni turno il giocatore preme il tasto INVIO scatenando così il lancio, (automatico), dei dadi e lo spostamento della propria pedina nel tabellone di gioco.
+Ad ogni turno il giocatore preme il tasto INVIO scatenando così il lancio, (automatico), dei dadi e lo spostamento della propria pedina nel tabellone di gioco, (anch'esso automatico).
 
 Vince chi arriva primo alla casella 63.
