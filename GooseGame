@@ -1,0 +1,182 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace GooseGameFlavio
+{
+    class Program
+    {
+
+        public static int RollingDice(Random r)
+        {
+            int numeroCasuale = r.Next(1, 7);
+            return numeroCasuale;
+        }
+
+        public static Dictionary<string, int> AddPlayer(int numberPlayers)
+        {
+            Dictionary<string, int> players = new Dictionary<string, int>();
+            for (int i = 1; i < numberPlayers + 1; i++)
+            {
+                Console.WriteLine("Qual'è il nome del giocatore " + i + "?" + "\n");
+                string player = Console.ReadLine();
+                while (players.ContainsKey(player))
+                {
+                    Console.WriteLine("\n" + player + ": Giocatore già esistente..." + "\n");
+                    Console.WriteLine("\n" + "Qual'è il nome del giocatore " + i + "?" + "\n");
+                    player = Console.ReadLine();
+                }
+                players.Add(player, 0);
+            }                
+            return players;
+        }
+
+        public static int VerifyNumber(string numeroPartecipanti)
+        {
+            int numPart;
+            bool isANumber = Int32.TryParse(numeroPartecipanti, out numPart);
+
+            while (numPart < 2 | numPart > 6 | isANumber != true)
+            {
+                if (isANumber != true)
+                {
+                    Console.WriteLine("\n" + "Devi inserire un numero!!!" + "\n");
+                }
+
+                if (numPart < 2 & isANumber == true)
+                {
+                    Console.WriteLine("\n" + "Il numero minimo di partecipanti è 2!!!" + "\n");
+                }
+
+                if (numPart > 6)
+                {
+                    Console.WriteLine("\n" + "Il numero massimo di partecipanti è 6!!!" + "\n");
+                }
+
+                Console.WriteLine("\n" + "Dammi il numero dei partecipanti (da 2 a 6)" + "\n");
+                isANumber = Int32.TryParse(Console.ReadLine(), out numPart);
+            }
+            return numPart;
+        }
+
+        static void Main(string[] args)
+        {            
+            Console.WriteLine("Dammi il numero dei partecipanti (da 2 a 6)" + "\n");
+            int numberPlayers = VerifyNumber(Console.ReadLine());            
+            
+            Dictionary<string, int> tabellone1 = AddPlayer(numberPlayers);
+            Dictionary<string, int> tabellone2 = new Dictionary<string, int>();
+
+            Random random = new Random();
+            int win = 63;
+            bool winner = false;
+            bool prank = false;
+            int[] goose = { 5, 9, 14, 18, 23, 27 };
+            int theBridge = 6;
+            int diceA, diceB, posizioneEnd, posizioneStart;
+            
+            while (winner != true)
+            {                
+
+                Dictionary<string, int> prank_dict = new Dictionary<string, int>();
+
+                foreach (string giocatore in tabellone1.Keys)
+                {
+                    if (prank_dict.ContainsKey(giocatore))
+                    {
+                        posizioneStart = tabellone2[giocatore];
+                    }
+                    else
+                    {
+                        posizioneStart = tabellone1[giocatore];
+                    }
+
+                    
+                    diceA = RollingDice(random);
+                    diceB = RollingDice(random);
+                    
+                    posizioneEnd = posizioneStart + diceA + diceB;
+
+                    if (posizioneEnd > win)
+                    {
+                        int backStep = posizioneEnd - win;
+                        posizioneEnd = win - backStep;
+                        Console.WriteLine("\n" + giocatore + " ha sforato!!!" + "\n" + giocatore + " ha fatto " + diceA + ", " + diceB + ". Si muove dalla posizione " + posizioneStart + " alla posizione " + posizioneEnd);
+                    }
+                    else
+                    {
+                        Console.WriteLine("\n" + "Il giocatore " + giocatore + " ha fatto " + diceA + ", " + diceB + ". Si muove dalla posizione " + posizioneStart + " alla posizione " + posizioneEnd);
+                    }
+
+                    if (posizioneEnd == theBridge)
+                    {
+                        posizioneEnd = 12;
+                        Console.WriteLine("\n" + "The BRIDGE!!!" + "\n" + giocatore + " va da posizione 6 a " + posizioneEnd);
+                    }
+
+                    while (goose.Contains(posizioneEnd))
+                    {
+                        Console.Write("\n" + "GOOSE!!!" + "\n" + giocatore + " si muove dalla posizione " + posizioneEnd);
+                        posizioneEnd = posizioneEnd + diceA + diceB;
+                        Console.WriteLine( " alla posizione " + posizioneEnd);
+                    }
+
+                    if (posizioneEnd == 63)
+                    {
+                        winner = true;
+                        Console.WriteLine("\n" + giocatore + " ha VINTO!!!");
+                        break;
+                    }
+
+                    if (tabellone2.ContainsValue(posizioneEnd))
+                    {
+                        foreach (string p in tabellone2.Keys)
+                        {
+                            if (tabellone2[p] == posizioneEnd)
+                            {
+                                
+                                if (prank_dict.ContainsKey(p))
+                                    continue;
+                                else
+                                {
+                                    if (p == giocatore)
+                                        continue;
+                                    prank_dict.Add(p, posizioneStart);
+                                    Console.WriteLine("\n" + "PRANK!!!" + "\n" + p + " va da posizione " + tabellone2[p] + " a " + posizioneStart);
+                                    prank = true;
+                                }
+                            }
+                        }
+                    }
+
+                    if (prank == true)
+                    {
+                        foreach (string prankedplayer in prank_dict.Keys)
+                        {
+                            tabellone2[prankedplayer] = prank_dict[prankedplayer];
+                        }
+                    }
+
+                    if (tabellone2.ContainsKey(giocatore))
+                    {
+                        tabellone2[giocatore] = posizioneEnd;
+                    }
+                    else
+                    {
+                        tabellone2.Add(giocatore, posizioneEnd);
+                    }
+
+                    Console.ReadKey();
+                }
+
+                foreach(string gio in tabellone2.Keys)
+                {
+                   tabellone1[gio] = tabellone2[gio];
+                }
+            }
+            
+            Console.ReadKey();
+        }
+    }
+}
